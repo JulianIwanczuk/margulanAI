@@ -2,7 +2,7 @@ import weaviate
 import json
 
 client = weaviate.Client(
-    url = "https://margulan.weaviate.network/v1",  # Replace with your endpoint
+    url = "https://margulan.weaviate.network/",  # Replace with your endpoint
     additional_headers = {
         "X-OpenAI-Api-Key": "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"  # Replace with your API key
     }
@@ -25,14 +25,14 @@ data = json.loads(resp.text)
 # Configure a batch process
 with client.batch as batch:
     batch.batch_size=100
-    # Batch import all Questions
+    # Batch import all Notion objects
     for i, d in enumerate(data):
-        print(f"importing id: {i+1}")
+        print(f"importing question: {i+1}")
 
         properties = {
-            "id": d["ID"],
-            "name": d["Name"],
+            "id": d["id"],
+            "name": d["name"],
             "answer": d["Answer"],
         }
 
-        client.batch.add_data_object(properties, "Notion")
+        client.batch.add_data_object(properties, "question")  
